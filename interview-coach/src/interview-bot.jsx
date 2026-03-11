@@ -780,7 +780,7 @@ export default function InterviewBot() {
                 gap: 6,
               }}
             >
-              {isDark ? "☀️ Light mode" : "🌙 Dark mode"}
+              {isDark ? "🌙 Dark mode" : "☀️ Light mode"}
             </button>
             </>
           )}
