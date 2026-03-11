@@ -950,7 +950,7 @@ export default function InterviewBot() {
                 letterSpacing: 0.3,
               }}
             >
-              Last updated 2026-03-10 &copy; Web App created by Erin Ng
+              Last updated 2026-03-10 Web App created by &copy;Erin Ng
             </div>
           </div>
         )}
