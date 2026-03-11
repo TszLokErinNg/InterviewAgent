@@ -43,12 +43,12 @@ You can answer by **typing** or using **voice input** (when supported by your br
 ---
 
 ### Getting Started
-## Option 1: Running the application via URL
+#### Option 1: Running the application via URL
 
 Click the following link to get started:
-[Interview Agent](interview-agent-pi.vercel.app)
+[Interview Agent](https://interview-agent-pi.vercel.app/)
 
-## Option 2: Runnning the application locally
+#### Option 2: Runnning the application locally
 
 From the `interview-coach` folder:
 
