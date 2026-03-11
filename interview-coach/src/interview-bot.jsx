@@ -534,15 +534,6 @@ export default function InterviewBot() {
     else startInterview();
   }
 
-  function handleCustomStart(jobDescription, resume) {
-    const prompt = buildCustomSystemPrompt(jobDescription, resume, botInstructions);
-    setCustomSystemPrompt(prompt);
-    const firstLine = jobDescription.split("\n").find(l => l.trim().length > 0) || "Custom Role";
-    setCustomContext({ label: firstLine.trim().slice(0, 60) });
-    startInterview();
-  }
-
-  // Override getSystemPrompt for custom after handleCustomStart sets it
   async function startInterviewWithPrompt(overridePrompt) {
     if (isRecording) stopRecording();
     setScreen("interview");
