@@ -125,35 +125,36 @@ function ScoreRing({ score }) {
 }
 
 // ── Feedback Card ──────────────────────────────────────────────────────────────
-function FeedbackCard({ parsed }) {
+function FeedbackCard({ parsed, isDark = true }) {
   return (
     <div style={{
-      background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-      border: "1px solid #334155", borderRadius: 16, padding: "20px 24px",
+      background: isDark ? "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)" : "#ffffff",
+      border: isDark ? "1px solid #334155" : "1px solid #e2e8f0",
+      borderRadius: 16, padding: "20px 24px",
       display: "flex", flexDirection: "column", gap: 16, animation: "slideIn 0.4s ease"
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
         <ScoreRing score={parsed.score} />
         <div>
-          <div style={{ fontSize: 11, letterSpacing: 2, color: "#64748b", textTransform: "uppercase", marginBottom: 4 }}>Interview Score</div>
-          <div style={{ fontSize: 13, color: "#94a3b8" }}>
+          <div style={{ fontSize: 11, letterSpacing: 2, color: isDark ? "#64748b" : "#000000", textTransform: "uppercase", marginBottom: 4 }}>Interview Score</div>
+          <div style={{ fontSize: 13, color: isDark ? "#94a3b8" : "#475569" }}>
             {parsed.score >= 8 ? "Excellent response! 🎯" : parsed.score >= 6 ? "Good effort, room to grow." : "Needs more practice."}
           </div>
         </div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        <div style={{ background: "#052e16", border: "1px solid #166534", borderRadius: 10, padding: "12px 14px" }}>
-          <div style={{ fontSize: 10, color: "#4ade80", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Strengths</div>
-          <div style={{ fontSize: 12, color: "#86efac", lineHeight: 1.7 }}>{parsed.strengths}</div>
+        <div style={{ background: isDark ? "#052e16" : "#f0fdf4", border: isDark ? "1px solid #166534" : "1px solid #86efac", borderRadius: 10, padding: "12px 14px" }}>
+          <div style={{ fontSize: 10, color: isDark ? "#4ade80" : "#16a34a", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Strengths</div>
+          <div style={{ fontSize: 12, color: isDark ? "#86efac" : "#15803d", lineHeight: 1.7 }}>{parsed.strengths}</div>
         </div>
-        <div style={{ background: "#450a0a", border: "1px solid #7f1d1d", borderRadius: 10, padding: "12px 14px" }}>
-          <div style={{ fontSize: 10, color: "#f87171", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Improve</div>
-          <div style={{ fontSize: 12, color: "#fca5a5", lineHeight: 1.7 }}>{parsed.improvements}</div>
+        <div style={{ background: isDark ? "#450a0a" : "#fff1f2", border: isDark ? "1px solid #7f1d1d" : "1px solid #fca5a5", borderRadius: 10, padding: "12px 14px" }}>
+          <div style={{ fontSize: 10, color: isDark ? "#f87171" : "#dc2626", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Improve</div>
+          <div style={{ fontSize: 12, color: isDark ? "#fca5a5" : "#b91c1c", lineHeight: 1.7 }}>{parsed.improvements}</div>
         </div>
       </div>
-      <div style={{ background: "#0c1a2e", border: "1px solid #1e3a5f", borderRadius: 10, padding: "12px 14px" }}>
-        <div style={{ fontSize: 10, color: "#60a5fa", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Sample Strong Answer</div>
-        <div style={{ fontSize: 12, color: "#93c5fd", lineHeight: 1.7, fontStyle: "italic" }}>{parsed.sample}</div>
+      <div style={{ background: isDark ? "#0c1a2e" : "#eff6ff", border: isDark ? "1px solid #1e3a5f" : "1px solid #93c5fd", borderRadius: 10, padding: "12px 14px" }}>
+        <div style={{ fontSize: 10, color: isDark ? "#60a5fa" : "#2563eb", letterSpacing: 2, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Sample Strong Answer</div>
+        <div style={{ fontSize: 12, color: isDark ? "#93c5fd" : "#1d4ed8", lineHeight: 1.7, fontStyle: "italic" }}>{parsed.sample}</div>
       </div>
     </div>
   );
@@ -650,7 +651,7 @@ export default function InterviewBot() {
   const isDark = theme === "dark";
 
   return (
-    <div style={{
+    <div className="interview-body" style={{
       minHeight: "100vh",
       background: isDark ? "#020817" : "#f8fafc",
       color: isDark ? "#0f172a" : "#0f172a",
@@ -671,6 +672,7 @@ export default function InterviewBot() {
         @keyframes ripple { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(2.5); opacity: 0; } }
         textarea:focus { outline: none; }
         textarea::placeholder { color: #334155; }
+        @supports (-webkit-touch-callout: none) { .interview-body { padding-bottom: env(safe-area-inset-bottom); } }
       `}</style>
 
       {/* Customize Modal */}
@@ -733,13 +735,13 @@ export default function InterviewBot() {
               </div>
               <button onClick={goToMenu} style={{
                 fontSize: 11, padding: "6px 14px", borderRadius: 8, border: "1px solid #334155",
-                background: "transparent", color: "#94a3b8", cursor: "pointer",
+                background: "transparent", color: isDark ? "#94a3b8" : "#000000", cursor: "pointer",
                 letterSpacing: 1, textTransform: "uppercase", fontFamily: "inherit",
               }}>← Menu</button>
               {!interviewDone && (
                 <button onClick={() => category === "custom" ? setScreen("custom-setup") : startInterview()} style={{
                   fontSize: 11, padding: "6px 14px", borderRadius: 8, border: "1px solid #334155",
-                  background: "transparent", color: "#94a3b8", cursor: "pointer",
+                  background: "transparent", color: isDark ? "#94a3b8" : "#000000", cursor: "pointer",
                   letterSpacing: 1, textTransform: "uppercase", fontFamily: "inherit",
                 }}>Restart</button>
               )}
@@ -937,6 +939,19 @@ export default function InterviewBot() {
             >
               {category === "custom" ? "Set Up Custom Interview →" : "Start Interview →"}
             </button>
+
+            <div
+              style={{
+                marginTop: 28,
+                width: "100%",
+                textAlign: "center",
+                fontSize: 12,
+                color: isDark ? "#475569" : "rgba(71, 85, 105, 1)",
+                letterSpacing: 0.3,
+              }}
+            >
+              Last updated 2026-03-10 &copy; Web App created by Erin Ng
+            </div>
           </div>
         )}
 
@@ -959,12 +974,12 @@ export default function InterviewBot() {
               </div>
             )}
 
-            <div style={{ flex: 1, overflowY: "auto", padding: "20px 0", display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ flex: 1, overflowY: "auto", padding: "20px 0 120px 0", display: "flex", flexDirection: "column", gap: 20 }}>
               {messages.map((msg, i) => (
                 <div key={i} style={{ animation: "slideIn 0.35s ease" }}>
                   {msg.role === "user" ? (
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                      <div style={{ maxWidth: "78%", background: "linear-gradient(135deg, #1d4ed8, #4f46e5)", borderRadius: "16px 16px 4px 16px", padding: "12px 16px", fontSize: 14, lineHeight: 1.6 }}>{msg.text}</div>
+                      <div style={{ maxWidth: "78%", background: isDark ? "#0f172a" : "#DEEEFF", border: isDark ? "1px solid #1e293b" : "1px solid rgba(29, 78, 216, 0.45)", borderRadius: "16px 16px 4px 16px", padding: "14px 18px", fontSize: 14, lineHeight: 1.7, color: isDark ? "#cbd5e1" : "#1e293b" }}>{msg.text}</div>
                     </div>
                   ) : (
                     <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -974,18 +989,45 @@ export default function InterviewBot() {
                           <WrapUpCard text={msg.parsed.text || msg.text} />
                         ) : msg.parsed?.type === "feedback" ? (
                           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                            <FeedbackCard parsed={msg.parsed} />
+                            <FeedbackCard parsed={msg.parsed} isDark={isDark} />
                             {msg.parsed.nextQuestion && (
-                              <div style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: 14, padding: "16px 18px" }}>
-                                <div style={{ fontSize: 10, letterSpacing: 2, color: "#475569", textTransform: "uppercase", marginBottom: 8 }}>
+                              <div
+                                style={{
+                                  background: isDark ? "#0f172a" : "#ffffff",
+                                  border: isDark ? "1px solid #1e293b" : "1px solid rgba(29, 78, 216, 0.45)",
+                                  borderRadius: 14,
+                                  padding: "16px 18px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    fontSize: 10,
+                                    letterSpacing: 2,
+                                    color: isDark ? "#475569" : "rgba(29, 78, 216, 0.8)",
+                                    textTransform: "uppercase",
+                                    marginBottom: 8,
+                                  }}
+                                >
                                   {msg.parsed.nextQuestion.toLowerCase().includes("do you have any questions") ? "Final Question" : "Next Question"}
                                 </div>
-                                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#cbd5e1" }}>{msg.parsed.nextQuestion}</div>
+                                <div style={{ fontSize: 14, lineHeight: 1.7, color: isDark ? "#cbd5e1" : "#0f172a" }}>{msg.parsed.nextQuestion}</div>
                               </div>
                             )}
                           </div>
                         ) : (
-                          <div style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "4px 16px 16px 16px", padding: "14px 18px", fontSize: 14, lineHeight: 1.7, color: "#cbd5e1" }}>{msg.parsed?.text || msg.text}</div>
+                          <div
+                            style={{
+                              background: isDark ? "#0f172a" : "#ffffff",
+                              border: isDark ? "1px solid #1e293b" : "1px solid rgba(29, 78, 216, 0.45)",
+                              borderRadius: "4px 16px 16px 16px",
+                              padding: "14px 18px",
+                              fontSize: 14,
+                              lineHeight: 1.7,
+                              color: isDark ? "#cbd5e1" : "#1e293b",
+                            }}
+                          >
+                            {msg.parsed?.text || msg.text}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -1012,7 +1054,16 @@ export default function InterviewBot() {
             </div>
 
             {!interviewDone && (
-              <div style={{ padding: "16px 0 24px", borderTop: "1px solid #1e293b", background: "#020817", position: "sticky", bottom: 0 }}>
+              <div
+                style={{
+                  padding: "16px 0 24px",
+                  borderTop: `1px solid ${isDark ? "#1e293b" : "#e2e8f0"}`,
+                  background: isDark ? "#020817" : "#f8fafc",
+                  position: "sticky",
+                  bottom: 0,
+                  zIndex: 20,
+                }}
+              >
                 {isRecording && (
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 10, padding: "8px 14px", animation: "slideIn 0.2s ease" }}>
                     <div style={{ position: "relative", width: 10, height: 10, flexShrink: 0 }}>
@@ -1024,21 +1075,45 @@ export default function InterviewBot() {
                     <span style={{ marginLeft: "auto", fontSize: 11, color: "#64748b" }}>Press ■ to stop</span>
                   </div>
                 )}
-                <div style={{ display: "flex", gap: 10, alignItems: "flex-end", background: "#0f172a", border: `1px solid ${isRecording ? "rgba(239,68,68,0.35)" : "#1e293b"}`, borderRadius: 14, padding: "10px 10px 10px 16px", transition: "border-color 0.25s" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 10,
+                    alignItems: "flex-end",
+                    background: isDark ? "#0f172a" : "#e2e8f0", // light gray container in light mode
+                    border: `1px solid ${isRecording ? "rgba(239,68,68,0.35)" : (isDark ? "#1e293b" : "#cbd5e1")}`,
+                    borderRadius: 14,
+                    padding: "10px 10px 10px 16px",
+                    transition: "border-color 0.25s",
+                  }}
+                >
                   <textarea
                     value={input}
                     onChange={e => { baseTranscriptRef.current = e.target.value; setInput(e.target.value); }}
                     onKeyDown={handleKey}
                     placeholder={isRecording ? "🎙️ Listening… speak now" : voiceSupported ? "Type or tap the mic to speak…" : "Type your answer… (Enter to send)"}
                     rows={3}
-                    style={{ flex: 1, background: "transparent", border: "none", color: "#e2e8f0", fontSize: 14, lineHeight: 1.6, resize: "none", fontFamily: "inherit" }}
+                    style={{
+                      flex: 1,
+                      background: isDark ? "transparent" : "#ffffff", // white input area in light mode
+                      border: isDark ? "none" : "1px solid #cbd5e1",
+                      borderRadius: isDark ? 0 : 10,
+                      color: isDark ? "#e2e8f0" : "#000000",
+                      fontSize: 14,
+                      lineHeight: 1.6,
+                      resize: "none",
+                      fontFamily: "inherit",
+                      padding: isDark ? 0 : "10px 12px",
+                    }}
                   />
                   <div style={{ display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 }}>
                     {voiceSupported && (
                       <button onClick={toggleRecording} disabled={loading} style={{
                         width: 40, height: 40, borderRadius: 10, border: "none",
-                        background: isRecording ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e293b",
-                        color: isRecording ? "#fff" : loading ? "#475569" : "#94a3b8",
+                        background: isRecording
+                          ? "linear-gradient(135deg, #dc2626, #b91c1c)"
+                          : (isDark ? "#1e293b" : "linear-gradient(135deg, #3b82f6, rgba(139, 92, 246, 1))"),
+                        color: isRecording ? "#fff" : loading ? "#475569" : (isDark ? "#94a3b8" : "#ffffff"),
                         cursor: loading ? "not-allowed" : "pointer",
                         display: "flex", alignItems: "center", justifyContent: "center",
                         transition: "all 0.2s", animation: isRecording ? "micGlow 1.5s ease infinite" : "none",
@@ -1052,8 +1127,10 @@ export default function InterviewBot() {
                     )}
                     <button onClick={sendAnswer} disabled={!input.trim() || loading} style={{
                       width: 40, height: 40, borderRadius: 10, border: "none",
-                      background: input.trim() && !loading ? `linear-gradient(135deg, ${meta.color}, #8b5cf6)` : "#1e293b",
-                      color: input.trim() && !loading ? "#fff" : "#475569",
+                      background: input.trim() && !loading
+                        ? `linear-gradient(135deg, ${meta.color}, rgba(139, 92, 246, 1))`
+                        : (isDark ? "#1e293b" : "#e2e8f0"),
+                      color: input.trim() && !loading ? "#fff" : (isDark ? "#475569" : "#64748b"),
                       cursor: input.trim() && !loading ? "pointer" : "not-allowed",
                       fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s",
                     }}>↑</button>
